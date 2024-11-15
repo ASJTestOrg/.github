@@ -1,0 +1,13 @@
+{
+    "name": "test template",
+    "description": "template for testing.",
+    "iconName": "example-icon",
+    "categories": [
+        "Java"
+    ],
+    "filePatterns": [
+        "package.json$",
+        "^Dockerfile",
+        ".*\\.md$"
+    ]
+}
