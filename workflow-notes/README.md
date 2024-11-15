@@ -26,6 +26,60 @@ Gitea does not currently have this feature, but it is planned for release in 1.2
 
 ## Reusable workflow
 ### Github
+Reusable workflow are workflow made to be reused by other repositories workflow, making it easier to create workflows and keeping duplicate code down.
+Reusable workflows are typically called *Called* and workflows using reusable worksflows are called *Callers*.
+
+They, of course, need to recide in the folder .github > workflows
+
+You can max nest 4 workflows down. 
+example: Caller > workflow A > workflow B > workflow C 
+This example is 3 nested workflows
+
+You can atmost call 20 reusable workflows in one workflow file. Nested counts.
+
+Secrets can be shared between workflows, but env context cannot be shared either. env context are local to the workflow
+
+
+To Use a reusable workflow you must first define a workflow to be reusable by adding `on: workflow_call:` to it. Thereafter you can add other stuff, like what input or secret it gets from the caller.
+```
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+    secrets:
+      personal_access_token:
+        required: true
+```
+
+Here the name of the input is called *config-path* and the secret *personal_access_token*
+
+Over in the Caller workflow you can use this reusable workflow by doing so:
+```
+jobs:
+  reusable_workflow_job:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: <insert workflow path here> (typically stored in another repo, so you need to add org/repo/name-of-workflow.yml@branch(if needed))
+      with:
+        repo-token: ${{ secrets.personal_access_token }}
+        configuration-path: ${{ inputs.config-path }}
+```
+For the secret you can also use the `inherit` keyword instead of `${{ secrets.personal_access_token }}` to inherit the secrets to the called-workflow. 
+This can only be done if both workflows recide in the same organization and shares secret.
+
+You can also use a matrix with reusable workflows, so they run x amount of times with x,y,z values.
+```
+jobs:
+  ReuseableMatrixJobForDeployment:
+    strategy:
+      matrix:
+        target: [dev, stage, prod]
+    uses: octocat/octo-repo/.github/workflows/deployment.yml@main
+    with:
+      target: ${{ matrix.target }}
+```
 
 ### Gitea
 
