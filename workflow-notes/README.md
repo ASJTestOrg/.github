@@ -24,6 +24,8 @@ To activate a workflow manually in github. you go into actions > choose the work
 ### Gitea
 Gitea does not currently have this feature, but it is planned for release in 1.23, though the exact release time is unknown.
 
+The activation should be places roughly the same spot as on github
+
 ## Reusable workflow
 ### Github
 Reusable workflow are workflow made to be reused by other repositories workflow, making it easier to create workflows and keeping duplicate code down.
@@ -95,20 +97,27 @@ jobs:
 ### Gitea
 
 
-## General Workflow stuff
-### Keywords
+### Triggers and releases
 #### On
+The on keyword is used to define triggers. These can be `workflow_disatch`, `workflow_call`, push/pull/merge and more.
 
-### Tags
+#### Releases
+You can make release by clicking release and drafting a new one. After that you can save the draft, make pre-release og publish.
+Release creates a zip of the source.
 
-### Releases
+By using this you can trigger an event that runs a pipeline that has the trigger
+```
+on:
+  release:
+    types: [published] <-- This can also be other things like created, saved and so on
+```
 
-### Triggers
+[More info here on the event](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#release)
+[More info on managing releases](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
 
-### Actions/Workflows/Jobs
-#### Actions
-**Unsure if this is available in gitea**
-#### Workflow
-#### Jobs
 
 ### Secrets and Inputs
+You can create action secrets by going into the setting of the repo or organization and then clicking *Actions secrets and variables*
+
+## More info on syntax
+[Syntax for github actions](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions)
