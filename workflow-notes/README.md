@@ -39,6 +39,12 @@ You can atmost call 20 reusable workflows in one workflow file. Nested counts.
 
 Secrets can be shared between workflows, but env context cannot be shared either. env context are local to the workflow
 
+To get it to work you might have to allow the repository with the reusable workflow to be accessible from other repositories in your org:
+go to repository > settings > actions > general > activate *"Accessible from repositories in the '<orgname>' organization "* > save
+This should make the repo accesible for the other repositories inside the organization.
+
+Also, you have to define a trigger for the Caller-workflow (push/pull/dispatch/...)
+
 
 To Use a reusable workflow you must first define a workflow to be reusable by adding `on: workflow_call:` to it. Thereafter you can add other stuff, like what input or secret it gets from the caller.
 ```
